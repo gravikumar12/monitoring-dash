@@ -1,0 +1,58 @@
+Here are the steps to create tables in Cloud SQL PostgreSQL and add values to the table using the Cloud SDK:
+
+Step 1: Create a Cloud SQL instance
+```
+bash
+gcloud sql instances create my-instance \
+  --database-version=POSTGRES_13 \
+  --cpu=1 \
+  --memory=3840MB \
+  --region=us-central1
+```
+
+Step 2: Create a database
+```
+bash
+gcloud sql databases create my-database \
+  --instance=my-instance
+```
+
+Step 3: Create a table
+Create a SQL file `create_table.sql` with the following content:
+
+```
+CREATE TABLE my_table (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL
+);
+```
+
+Run the following command to execute the SQL file:
+
+```
+bash
+gcloud sql databases execute-sql \
+  --instance=my-instance \
+  --database=my-database \
+  --sql=create_table.sql
+```
+
+Step 4: Insert values into the table
+Create a SQL file `insert_values.sql` with the following content:
+
+```
+INSERT INTO my_table (name, email) VALUES
+  ('John Doe', 'john@example.com'),
+  ('Jane Doe', 'jane@example.com');
+```
+
+Run the following command to execute the SQL file:
+
+```
+bash
+gcloud sql databases execute-sql \
+  --instance=my-instance \
+  --database=my-database \
+  --sql=insert_values.sql
+```
